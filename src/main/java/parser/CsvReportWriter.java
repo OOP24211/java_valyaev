@@ -1,3 +1,4 @@
+package parser;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
@@ -6,7 +7,7 @@ import java.util.List;
 class CsvReportWriter {
     public void write(String fileName, List<WordStat> stats) throws IOException {
         try (PrintWriter writer = new PrintWriter(fileName, StandardCharsets.UTF_8)) {
-            writer.println("Слово,Частота,Частота (%)");
+            writer.println("Word,Frequency,Frequency (%)");
             for (WordStat stat : stats) {
                 writer.println(stat.toCsvRow());
             }

@@ -1,3 +1,6 @@
+package parser;
+import lombok.RequiredArgsConstructor;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -10,21 +13,18 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 class TextAnalyzer {
     private final Path filePath;
-
-    public TextAnalyzer(String filePath) {
-        this.filePath = Paths.get(filePath);
-    }
 
     public List<WordStat> analyze() throws IOException {
         String content = Files.readString(filePath, StandardCharsets.UTF_8).toLowerCase();
 
-        Pattern delimiter = Pattern.compile("[^\\p{L}\\p{N}]+");
+        Pattern delimiter = Pattern.compile("[^\\p{L}\\p{N}\\-`]+");
 
         List<String> words = delimiter.splitAsStream(content)
                 .filter(w -> !w.isBlank())
-                .collect(Collectors.toList());
+                .toList();
 
         long totalWords = words.size();
         if (totalWords == 0) return Collections.emptyList();
@@ -36,7 +36,7 @@ class TextAnalyzer {
 
         return frequencyMap.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .map(entry -> new WordStat(entry.getKey(), entry.getValue(), totalWords))
+                .map(entry -> new WordStat(entry.getKey(), entry.getValue(), (double) entry.getValue() / totalWords * 100))
                 .collect(Collectors.toList());
     }
 }

@@ -32,3 +32,5 @@ bin/
 .env
 .idea
 csv-parser.iml
+sample.csv
+sample.txt
