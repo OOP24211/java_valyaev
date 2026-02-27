@@ -34,3 +34,4 @@ bin/
 csv-parser.iml
 sample.csv
 sample.txt
+/target/
